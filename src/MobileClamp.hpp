@@ -1,8 +1,6 @@
 #pragma once
 
 #include "Constants.hpp"
-#include "pros/motors.hpp"
-#include "pros/motor_group.hpp"
 #include "pros/adi.hpp"
 
 
@@ -13,9 +11,9 @@ using namespace pros;
 
 class MobileClamp{
     bool state = false;
-    pros::ADIDigitalOut piston = ADIDigitalOut('A');
+    adi::DigitalOut piston = adi::DigitalOut('A');
     public:
-    MobileClamp(){
+    MobileClamp(){  
 
     }
 
