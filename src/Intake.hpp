@@ -25,8 +25,7 @@ public:
     };
 
     void IntakeRotation(int RotationSpeed) { // rotates both intakes 
-        intakeStage1_mtr.move(RotationSpeed);
-        intakeStage2_mtr.move(RotationSpeed);
+        intakeMotorGroup.move(RotationSpeed);
     }
 };
 
