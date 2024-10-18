@@ -9,7 +9,7 @@ using namespace Constants;
 using namespace pros;
 
 
-struct DriveTrain {
+class DriveTrain {
 
     //LEFT MOTORS
     Motor fl_mtr = Motor(fl_p);//front right motor
@@ -25,6 +25,7 @@ struct DriveTrain {
     MotorGroup left_group {{fl_p, ml_p,bl_p}};//create motor groups
     MotorGroup right_group {{fr_p, mr_p,br_p}};
 
+    public:
     DriveTrain() {// boot up DriveTrain by settings motors to zero(tare_position)
         left_group.set_brake_mode(E_MOTOR_BRAKE_HOLD);
         right_group.set_brake_mode(E_MOTOR_BRAKE_HOLD);
@@ -35,13 +36,7 @@ struct DriveTrain {
 
     }
 
-    inline void tankDrive(signed char leftY, signed char rightY) {
-        left_group.move(abs(leftY)<threshold ? 0 :leftY);// ? means if statement so if absolute value y is less than the threshold, do zero and it is isnt, it uses whatever the joystick input was
-        right_group.move(abs(rightY)<threshold ? 0 :rightY);
-
-    }
-
-    inline void arcadeDrive(int8_t leftY, int8_t rightX) {
+    void arcadeDrive(int8_t leftY, int8_t rightX) {
         leftY = abs(leftY)<threshold ? 0 : leftY;
         rightX = abs(rightX)<threshold ? 0 : rightX;
         left_group.move(leftY + rightX);
