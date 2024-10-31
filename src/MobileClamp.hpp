@@ -21,11 +21,4 @@ class MobileClamp{
         piston.set_value(b);
     }
 
-    void clamp() {
-        piston.set_value(true);
-    }
-
-    void unclamp() {
-        piston.set_value(false);
-    }
 };

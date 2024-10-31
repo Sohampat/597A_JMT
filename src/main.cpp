@@ -5,8 +5,10 @@
 #include "pros/motors.hpp"
 #include "pros/motor_group.hpp"
 #include "Intake.hpp"
+#include <iostream>
 
 
+Controller master(E_CONTROLLER_MASTER);
 DriveTrain dt = DriveTrain();
 Intake intake = Intake();
 MobileClamp mbc = MobileClamp();
@@ -19,9 +21,9 @@ void autonomous() {}
 
 
 void opcontrol() {
-	Controller master(E_CONTROLLER_MASTER);
     bool clampState = false;
     while(true){
+        std::cout << "while loop run" << std::endl;
         //--------------------INTAKE STAGE 1 ROTATION LOGIC-------------------------
         if (master.get_digital(E_CONTROLLER_DIGITAL_R1)){
 
@@ -32,6 +34,7 @@ void opcontrol() {
             intake.IntakeRotation(-Intake1RotationVoltage); // reverses the spin of the motor
 
         } else {
+            std::cout << "intake rotation to zero" << std::endl;
             intake.IntakeRotation(0);
         }
 
@@ -43,11 +46,9 @@ void opcontrol() {
         }
 
         //-------------------  ARCADE DRIVE TRAIN LOGIC ----------------------------------
-        int8_t left = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
-        int8_t right = master.get_analog(E_CONTROLLER_ANALOG_RIGHT_Y);
-        dt.arcadeDrive(left,right);
-
-        pros::delay(10);
+        dt.arcadeDrive(master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y),master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X));
+        std::cout << "what" << std::endl;
+        pros::delay(100);
     }
 }
 
