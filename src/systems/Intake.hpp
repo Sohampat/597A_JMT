@@ -11,7 +11,7 @@ struct Intake {
         Motor it1_mtr = Motor(it1_p);
         Motor it2_mtr = Motor(it2_p);
 
-        MotorGroup it_mtr = MotorGroup({it1_p, it2_p});
+        MotorGroup it_mtr = MotorGroup({it1_p, -it2_p});
     public:
         Intake() {
             it_mtr.set_brake_mode(E_MOTOR_BRAKE_HOLD);
@@ -23,5 +23,9 @@ struct Intake {
 
         void spinUp() {
             it_mtr.move(-127);
+        }
+
+        void spinDown() {
+            it_mtr.move(127);
         }
 };

@@ -1,8 +1,9 @@
 #pragma once
 
 #include <cmath>
+#include <cstdint>
 namespace Constants {
-    static constexpr unsigned char fl_p = 11; // Port of Front Left motor
+    const int8_t fl_p = 11; // Port of Front Left motor
     static constexpr unsigned char ml_p = 12; // Port of Middle Left motor
     static constexpr unsigned char bl_p = 13; // Port of Back Left motor
     static constexpr unsigned char fr_p = 1; // Port of Front Right motor
@@ -10,7 +11,7 @@ namespace Constants {
     static constexpr unsigned char br_p = 3; // Port of Back Right motor
 
     static constexpr unsigned char it1_p = 16; // Port of the Elevation mech
-    static constexpr unsigned char it2_p = 17; // Port of the Elevation mech
+    static constexpr unsigned char it2_p = 15; // Port of the Elevation mech
 
     static constexpr unsigned char hinge_p = 'A'; // Port for the Catapult's button
 
@@ -21,6 +22,14 @@ namespace Constants {
     static const double pi = 3.14159265358979323846; // pi
     static const double radToDeg = 180/pi;
     static constexpr float wheelDiameter = 3.25f; // Diameter of drive wheels
+
+    //drive train auton values---------------
+    static const float driveTrainWidth = 14.5;
+    static const float kP = 0;
+    static const float kI = 0;
+    static const float kD  = 0;
+    static const float radius = driveTrainWidth/2;// can be found by measuring the width of the drive train and then dividing by two
+    //-------------------------------
 
     /*
     1800 ticks/rev with 36:1 gears (BLUE)

@@ -3,6 +3,7 @@
 #include "pros/rtos.hpp"
 #include "systems/DriveTrain.hpp"
 #include "systems/Intake.hpp"
+#include "systems/MobileClamp.hpp"
 
 using namespace pros;
 
@@ -10,6 +11,8 @@ Controller master(E_CONTROLLER_MASTER);
 
 DriveTrain dt = DriveTrain();
 Intake it = Intake();
+MobileClamp mbc = MobileClamp();
+
 
 /*
 lvgl::LV_IMG_DECLARE(normal);
@@ -68,7 +71,7 @@ void initialize() {
 	/*lv_obj_t* odometryInfo = createLabel(lv_scr_act(), 20, DISP_CENTER, 300, 40, "Odom Info");
 	//Odometry odom = Odometry(&dt, &odometryInfo);
 */
-	dt.teleMove = [=]{dt.arcadeDrive(lY,rX);};/*
+	dt.arcadeDrive(lY,rX);/*
 	lv_obj_t* driveBtn = createBtn(lv_scr_act(), 50, DISP_CENTER, 300, 20, "Tank Drive", LV_COLOR_MAKE(62, 180, 137), LV_COLOR_MAKE(153, 50, 204));
 	lv_btn_set_action(driveBtn, LV_BTN_ACTION_CLICK, toggleDriveMode);
 
@@ -123,6 +126,11 @@ void autonomous() {
     debugWait();
 
 	
+	//dt.tankDrive(60,60);
+	//delay(2200);
+	//dt.tankDrive(0, 0);
+	//programs -> 597A ->  competition -> programming skills -> 
+
 }
 
 
@@ -143,6 +151,8 @@ void autonomous() {
 void opcontrol() {
 	bool prcsM = false;
 	int prcsET = 0;
+	bool clampState = false;
+
 	while (true) {
 		// Set precision mode (dont repeat until half a second)
 		if (master.get_digital(E_CONTROLLER_DIGITAL_DOWN) && (millis() - prcsET > 500)) {prcsM = !prcsM; prcsET = millis();}
@@ -153,13 +163,21 @@ void opcontrol() {
 			rX = (prcsM) ? master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X)/2 : master.get_analog(E_CONTROLLER_ANALOG_RIGHT_X);
 		}
 
-		dt.teleMove();
+		dt.arcadeDrive(lY, rX);
 
-        if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
+		if (master.get_digital_new_press(E_CONTROLLER_DIGITAL_R1)) {
+			clampState = !clampState;
+			mbc.changeClampState(clampState);
+		}
+
+		if (master.get_digital(E_CONTROLLER_DIGITAL_R2)) {
             it.spinUp();
+        } else if (master.get_digital(E_CONTROLLER_DIGITAL_L2)) {
+            it.spinDown();
         } else {
-            it.stop();
-        }
+			it.stop();
+		}
+
 
 		delay(20);
 	}
